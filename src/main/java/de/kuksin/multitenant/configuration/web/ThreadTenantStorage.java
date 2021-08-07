@@ -9,6 +9,7 @@ public class ThreadTenantStorage {
     }
 
     public static String getTenantId() {
+        System.out.println("currentTenant.get()___"+currentTenant.get());
         return currentTenant.get();
     }
 

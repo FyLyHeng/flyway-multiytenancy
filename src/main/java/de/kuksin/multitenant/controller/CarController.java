@@ -10,7 +10,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @RestController
-@Transactional
+//@Transactional
 @RequestMapping(path = "/cars")
 public class CarController {
 

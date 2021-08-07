@@ -1,4 +1,4 @@
-CREATE TABLE car
+CREATE TABLE moto
 (
     id     serial  PRIMARY KEY,
     name   VARCHAR(255),

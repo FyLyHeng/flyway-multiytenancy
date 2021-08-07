@@ -3,15 +3,32 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
   flyway:
     enabled: false
-tenants:
-  datasources:
-    vw:
-      jdbcUrl: jdbc:h2:mem:vw
-      driverClassName: org.h2.Driver
-      username: sa
-      password: password
-    bmw:
-      jdbcUrl: jdbc:h2:mem:bmw
-      driverClassName: org.h2.Driver
-      username: sa
-      password: password
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/master
+    driverClassName: org.postgresql.Driver
+    username: postgres
+    password: P@ssw0rd
+
+#tenants:
+#  datasources:
+#    vw:
+#      url: jdbc:postgresql://localhost:5432/vw
+#      driverClassName: org.postgresql.Driver
+#      username: postgres
+#      password: P@ssw0rd
+#    bmw:
+#      url: jdbc:postgresql://localhost:5432/bmw
+#      driverClassName: org.postgresql.Driver
+#      username: postgres
+#      password: P@ssw0rd
+
+#tenants.datasources.vw.url: jdbc:postgresql://localhost:5432/vw
+#tenants.datasources.vw.driverClassName: org.postgresql.Driver
+#tenants.datasources.vw.username: postgres
+#tenants.datasources.vw.password: P@ssw0rd
+
+#tenants.datasources.bmw.url: jdbc:postgresql://localhost:5432/bmw
+#tenants.datasources.bmw.driverClassName: org.postgresql.Driver
+#tenants.datasources.bmw.username: postgres
+#tenants.datasources.bmw.password: P@ssw0rd

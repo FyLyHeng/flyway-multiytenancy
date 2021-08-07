@@ -23,7 +23,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-rest'
     implementation "org.flywaydb:flyway-core:6.1.4"
-    implementation 'com.h2database:h2:1.4.200'
+//    implementation 'com.h2database:h2:1.4.200'
+    runtimeOnly 'org.postgresql:postgresql'
     compile 'org.apache.commons:commons-lang3:3.9'
     compileOnly 'org.projectlombok:lombok'
 

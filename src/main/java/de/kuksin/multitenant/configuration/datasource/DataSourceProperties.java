@@ -19,13 +19,14 @@ public class DataSourceProperties {
     }
 
     public void setDatasources(Map<String, Map<String, String>> datasources) {
+        System.out.println("datasources____"+datasources);
         datasources
                 .forEach((key, value) -> this.datasources.put(key, convert(value)));
     }
 
     public DataSource convert(Map<String, String> source) {
         return DataSourceBuilder.create()
-                .url(source.get("jdbcUrl"))
+                .url(source.get("url"))
                 .driverClassName(source.get("driverClassName"))
                 .username(source.get("username"))
                 .password(source.get("password"))

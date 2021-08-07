@@ -26,6 +26,7 @@ public class DataSourceConfiguration {
 
     @PostConstruct
     public void migrate() {
+        System.out.println("dataSourceProperties__"+dataSourceProperties);
         dataSourceProperties
                 .getDatasources()
                 .values()
