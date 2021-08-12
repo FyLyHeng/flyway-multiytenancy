@@ -1,14 +1,19 @@
 spring:
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
   flyway:
     enabled: false
 
+
+  ## Master datasource ##
   datasource:
     url: jdbc:postgresql://localhost:5432/master
     driverClassName: org.postgresql.Driver
     username: postgres
     password: P@ssw0rd
+#    username: app_user
+#    password: 123456
 
 #tenants:
 #  datasources:

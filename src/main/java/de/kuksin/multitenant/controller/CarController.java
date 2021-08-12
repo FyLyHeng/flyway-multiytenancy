@@ -5,12 +5,9 @@ import de.kuksin.multitenant.repositories.CarRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-
-import javax.transaction.Transactional;
 import java.util.List;
 
 @RestController
-//@Transactional
 @RequestMapping(path = "/cars")
 public class CarController {
 

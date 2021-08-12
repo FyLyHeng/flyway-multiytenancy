@@ -26,7 +26,6 @@ public class DataSourceConfiguration {
 
     @PostConstruct
     public void migrate() {
-        System.out.println("dataSourceProperties__"+dataSourceProperties);
         dataSourceProperties
                 .getDatasources()
                 .values()
@@ -38,5 +37,20 @@ public class DataSourceConfiguration {
     private void migrate(DataSource dataSource) {
         Flyway flyway = Flyway.configure().dataSource(dataSource).load();
         flyway.migrate();
+    }
+
+
+    public void flywayMigrate(DataSource dataSource){
+        try {
+            Flyway flyway =Flyway.configure()
+                    .dataSource(dataSource)
+                    .baselineOnMigrate(true)
+                    .outOfOrder(true)
+                    .load();
+            flyway.repair();
+            flyway.migrate();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }
