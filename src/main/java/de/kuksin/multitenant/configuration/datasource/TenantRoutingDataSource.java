@@ -63,6 +63,7 @@ public class TenantRoutingDataSource extends AbstractRoutingDataSource {
 
 
             //create new database
+            tenantServiceResolver.checkAndCreateNotExistDB(tenantName);
             newTenantDataSource = tenantServiceResolver.createDataSourceForTenantId(tenant,tenantName);
             sourceConfiguration.flywayMigrate(newTenantDataSource);
 
@@ -71,11 +72,9 @@ public class TenantRoutingDataSource extends AbstractRoutingDataSource {
 
         }catch (Exception e){
             System.out.println("####### Fail To Register New Tenant DataSource: "+tenantName+" Have Been Remove #######");
+            e.printStackTrace();
             tenantServiceResolver.removeTenant(tenantName);
         }
-
-
-
 
         return newTenantDataSource;
     }

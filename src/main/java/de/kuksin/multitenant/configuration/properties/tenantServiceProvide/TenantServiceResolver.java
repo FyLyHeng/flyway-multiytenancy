@@ -6,6 +6,8 @@ import com.zaxxer.hikari.hibernate.HikariConnectionProvider;
 import net.minidev.json.JSONObject;
 import net.minidev.json.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +27,7 @@ import java.util.Properties;
  */
 
 @Component
+@EnableAutoConfiguration
 public class TenantServiceResolver {
     private final Environment env;
     private final DBUtilServiceProvide dbUtilServiceProvide;
@@ -83,32 +87,43 @@ public class TenantServiceResolver {
 
 
     public void removeTenant (String tenantName){
-//        jdbcTemplate.update("UPDATE data_source_config SET is_active = '0' WHERE name =?",tenantName);
         jdbcTemplate.update("DELETE FROM data_source_config WHERE name =?",tenantName);
     }
 
 
-    //create new DB (tenant)
-    public DataSource createDataSourceForTenantId(Map<String,Object> tenantInfo ,String tenantDatabaseName) {
+    public void checkAndCreateNotExistDB (String tenantName){
+        jdbcTemplate.execute("SELECT 'CREATE DATABASE MYDB2' WHERE NOT EXISTS (SELECT From pg_database WHERE datname ='MYDB2')\\gexec");
+    }
 
-/*        HikariConfig tenantHikariConfig = new HikariConfig();
-        //String tenantJdbcURL = dbUtilServiceProvide.databaseURLFromPostgresSQLJdbcUrl((String) tenantInfo.get("url"));
-        tenantHikariConfig.setJdbcUrl((String) tenantInfo.get("url"));
-        tenantHikariConfig.setPassword((String) tenantInfo.get("password"));
-        tenantHikariConfig.setUsername((String) tenantInfo.get("username"));
-        tenantHikariConfig.setPoolName(tenantDatabaseName + "-db-pool");
-        tenantHikariConfig.setDriverClassName((String) tenantInfo.get("driverClassName"));
-        //tenantHikariConfig.setDataSourceClassName("org.postgresql.ds.PGSimpleDataSource");
-        System.out.println(tenantHikariConfig.getJdbcUrl());
-        return new HikariDataSource(tenantHikariConfig);*/
+    //create new DB (tenant)
+    public DataSource createDataSourceForTenantId(Map<String,Object> tenantInfo ,String tenantDatabaseName) throws SQLException {
+
+//        HikariConfig tenantHikariConfig = new HikariConfig();
+//        tenantHikariConfig.setJdbcUrl((String) tenantInfo.get("url"));
+//        tenantHikariConfig.setPassword((String) tenantInfo.get("password"));
+//        tenantHikariConfig.setUsername((String) tenantInfo.get("username"));
+//        tenantHikariConfig.setDriverClassName((String) tenantInfo.get("driverClassName"));
+//        //tenantHikariConfig.setDataSourceClassName("org.postgresql.ds.PGSimpleDataSource");
+//        System.out.println(tenantHikariConfig.getJdbcUrl());
+//        return new HikariDataSource(tenantHikariConfig);
+
+
+/*        Properties dsProps = new Properties();
+        dsProps.setProperty("url", (String) tenantInfo.get("url"));
+        dsProps.setProperty("username", "postgres");
+        dsProps.setProperty("password", "P@ssw0rd");
+
+        Properties configProps = new Properties();
+        configProps.setProperty("driverClassName", (String) tenantInfo.get("driverClassName"));
+        configProps.setProperty("jdbcUrl", (String) tenantInfo.get("url"));*/
+
 
 
         Properties dsProps = new Properties();
-        dsProps.setProperty("url", (String) tenantInfo.get("url"));
-//        dsProps.setProperty("username", "app_user");
-//        dsProps.setProperty("password", "123456");
-        dsProps.setProperty("user", "postgres");
-        dsProps.setProperty("password", "P@ssw0rd");
+        dsProps.setProperty("tenants.datasources.vw2.url", "jdbc:postgresql://localhost:5432/vw2?autoReconnect=true&useSSL=false&createDatabaseIfNotExist=true");
+        dsProps.setProperty("tenants.datasources.vw2.username", "postgres");
+        dsProps.setProperty("tenants.datasources.vw2.password", "P@ssw0rd");
+        dsProps.put("javax.persistence.create-database-schemas", true);
 
         Properties configProps = new Properties();
         configProps.setProperty("driverClassName", (String) tenantInfo.get("driverClassName"));
@@ -116,14 +131,6 @@ public class TenantServiceResolver {
 
         HikariConfig hc = new HikariConfig(configProps);
         hc.setDataSourceProperties(dsProps);
-
-        if (hc.getDataSource()!=null){
-            System.out.println("Yessss bro");
-            System.out.println(hc.getDataSource());
-            return new HikariDataSource(hc);
-        }else {
-
-            return null;
-        }
+        return new HikariDataSource(hc);
     }
 }

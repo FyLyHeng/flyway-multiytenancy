@@ -1,3 +1,5 @@
+-- this file for Master datasource management
+HeaderTenantInterceptor headerTenantInterceptor
 CREATE TABLE data_source_config
 (
     id     serial  PRIMARY KEY,

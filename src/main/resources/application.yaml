@@ -28,12 +28,3 @@ spring:
 #      username: postgres
 #      password: P@ssw0rd
 
-#tenants.datasources.vw.url: jdbc:postgresql://localhost:5432/vw
-#tenants.datasources.vw.driverClassName: org.postgresql.Driver
-#tenants.datasources.vw.username: postgres
-#tenants.datasources.vw.password: P@ssw0rd
-
-#tenants.datasources.bmw.url: jdbc:postgresql://localhost:5432/bmw
-#tenants.datasources.bmw.driverClassName: org.postgresql.Driver
-#tenants.datasources.bmw.username: postgres
-#tenants.datasources.bmw.password: P@ssw0rd
